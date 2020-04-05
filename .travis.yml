@@ -1,0 +1,10 @@
+language: nodejs
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t mahidocker2018/nodewebsite1 .
+  
+script:
+  - docker run -itd -p 7777:8080 --name traviscontainer mahidocker2018/nodewebsite1
