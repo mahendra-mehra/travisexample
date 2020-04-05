@@ -4,7 +4,13 @@ services:
   - docker
 
 before_install:
-  - docker build -t mahidocker2018/nodewebsite1 .
+  - docker build -t nodewebsite1 .
   
 script:
-  - docker run -itd -p 7777:8080 --name traviscontainer mahidocker2018/nodewebsite1
+  - docker run -itd --name traviscontainer nodewebsite1
+  - docker ps
+
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+  - docker tag nodewebsite1 $DOCKER_USER/nodewebsite1:$TRAVIS_BUILD_NUMBER
+  - docker push $DOCKER_USER/nodewebsite1:$TRAVIS_BUILD_NUMBER
